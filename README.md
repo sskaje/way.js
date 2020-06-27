@@ -3,6 +3,8 @@ way.js
 
 This is a forked version, and not pushed as PR to original repository.
 
+**compressed js under /dist/ is not updated. Please use original one.**
+
 
 
 
