@@ -1,6 +1,11 @@
 way.js
 ======
 
+This is a forked version, and not pushed as PR to original repository.
+
+
+
+
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/gwendall/way.js?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Simple, lightweight, persistent, framework-agnostic two-way databinding Javascript library.  
@@ -72,6 +77,12 @@ json | boolean | false | Returns pretty-printed json data to its DOM element.
 html | boolean | false | Declares whether the data attributed to an element should be parsed as HTML or not.
 pick | array | null | A comma separated list of values to pick (in forms only) to sync with the storage. By default, all form inputs are synced.
 omit | array | null | A comma separated list of values (in forms only) to not sync with the storage. By default, no form input is omitted.
+attr | boolean | false | if there is any element requires setting attribute without way-data, set this way-attr="true"
+attr-xxx | string | null | set attribute, like way-attr-test="data.value" will set test="{translated data.value}" to element
+default-attr-xxx | string | null | set default attribute, if way-attr-xxx is empty and way-default-attr-xxx is defined, this value will be set to data element
+template | string | '{data}' | replace value of way-data to {data}, data in {data} is configured with templatevar
+templatevar | string | data | see template
+
 
 Some examples:
 
