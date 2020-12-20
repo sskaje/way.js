@@ -1119,7 +1119,7 @@
         return valid;
     };
 
-    var escapeHTML = function(str) {
+    var _escapeHTML = function(str) {
         return str && _w.isString(str)
             ? str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
             : str;
@@ -1699,7 +1699,7 @@
     };
 
     wQuery.prototype.text = function(value) {
-        return this.prop('innerHTML', escapeHTML(value));
+        return this.prop('innerHTML', _escapeHTML(value));
     };
 
     wQuery.prototype.prop = function(prop, value) {
