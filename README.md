@@ -82,8 +82,12 @@ omit | array | null | A comma separated list of values (in forms only) to not sy
 attr | boolean | false | if there is any element requires setting attribute without way-data, set this way-attr="true"
 attr-xxx | string | null | set attribute, like way-attr-test="data.value" will set test="{translated data.value}" to element
 default-attr-xxx | string | null | set default attribute, if way-attr-xxx is empty and way-default-attr-xxx is defined, this value will be set to data element
-template | string | '{data}' | replace value of way-data to {data}, data in {data} is configured with templatevar
-templatevar | string | data | see template
+template | bool | false | Whether enable template replacement  
+templatevar | string | data | replace value of way-data to {templatevar}, see template
+repeat | variable | no default | see repeat
+wrappertag | string | div | div, parent, ...
+repeat-key | string | $$key | loop key to repeat-key
+repeat-data | string | $$data | loop data to repeat-data
 
 
 Some examples:

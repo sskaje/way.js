@@ -86,6 +86,7 @@
         this.data = {};
         this._bindings = {};
         this.options = {
+            debug: false,
             persistent: true,
             timeoutInput: 50,
             timeoutDOM: 500
@@ -320,6 +321,7 @@
 
         var templatevar = options.templatevar || 'data';
         templatevar = '{' + templatevar + '}'
+
         options.transform = options.transform || [];
         options.transform.forEach(function(transformName) {
             var transform =
@@ -648,24 +650,41 @@
 
             repeat.filter = repeat.filter || [];
             w.dom(wrapper).empty();
+            var repeatOptions = self.dom(repeat.element).getOptions();
+
+            if (way.options.debug && repeatOptions.debugdump) {
+                console.log("[WAY REPEAT DUMP]");
+                console.log("Options");
+                console.table(repeatOptions);
+                // console.log("Data");
+                // console.log(data);
+            }
 
             for (var key in data) {
                 /*
-                        var item = data[key],
-                                test = true;
-                        for (var i in repeat.filter) {
-                            var filterName = repeat.filter[i];
-                            var filter = self._filters[filterName] || function(data) { return data };
-                            test = filter(item);
-                            if (!test) { break; }
-                        }
-                        if (!test) { continue; }
-                        */
+                var item = data[key],
+                        test = true;
+                for (var i in repeat.filter) {
+                    var filterName = repeat.filter[i];
+                    var filter = self._filters[filterName] || function(data) { return data };
+                    test = filter(item);
+                    if (!test) { break; }
+                }
+                if (!test) { continue; }
+                */
+
+                if (way.options.debug && repeatOptions.debugdump) {
+                    console.log("[WAY REPEAT Dump Row]")
+                    console.table([{"key": key, "data": data[key]}]);
+                }
 
                 w.dom(repeat.element).attr(tagPrefix + '-scope', key);
                 var html = w.dom(repeat.element).get(0).outerHTML;
-                html = html.replace(/\$\$key/gi, key);
-                html = html.replace(/\$\$data/gi, JSON.stringify(data[key]));
+
+                // html = html.replace(/\$\$key/gi, key);
+                // html = html.replace(/\$\$data/gi, JSON.stringify(data[key]));
+                html = html.replaceAll('$$' + repeatOptions.repeatkey, key);
+                html = html.replaceAll('$$' + repeatOptions.repeatdata, JSON.stringify(data[key]));
                 items.push(html);
             }
 
@@ -757,7 +776,11 @@
                 persistent: false,
                 attr: false,
                 template: false,
-                templatevar: 'data'
+                templatevar: 'data',
+                debug: false,
+                debugdump: false,
+                repeatkey: 'key',
+                repeatdata: 'data'
             };
         return _w.extend(defaultOptions, self.dom(element).getAttrs(tagPrefix));
     };
@@ -775,7 +798,8 @@
                 html: 'boolean',
                 persistent: 'boolean',
                 attr: 'boolean',
-                template: 'boolean'
+                template: 'boolean',
+                debugdump: 'boolean'
             };
 
             var parsers = {
@@ -1720,7 +1744,11 @@
             if (value === undefined) {
                 return elements[i].getAttribute(attr);
             } else {
-                elements[i].setAttribute(attr, value);
+                if (typeof value == 'object') {
+                    elements[i].setAttribute(attr, JSON.stringify(value));
+                } else {
+                    elements[i].setAttribute(attr, value);
+                }
             }
         }
         return self;
