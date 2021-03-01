@@ -297,15 +297,19 @@
 
         optionsKeys = Object.keys(validAttributes);
         for (var i = 0; i < optionsKeys.length; i++) {
-            var value = null
+            var value = null;
             if (validAttributes[optionsKeys[i]]['value']) {
                 // get from storage
                 var scope = way.dom(element).scope();
                 var key = scope ? scope + '.' + validAttributes[optionsKeys[i]]['value'] : validAttributes[optionsKeys[i]]['value'];
                 value = way.get(key);
             }
-            if ((value === null ||  value === undefined) && validAttributes[optionsKeys[i]]['default']) {
-                value = validAttributes[optionsKeys[i]]['default'];
+            if ((value === null ||  value === undefined)) {
+                if (validAttributes[optionsKeys[i]]['default']) {
+                    value = validAttributes[optionsKeys[i]]['default'];
+                } else if (validAttributes[optionsKeys[i]]['value']) {
+                    value = validAttributes[optionsKeys[i]]['value'];
+                }
             }
 
             if (value !== null) {
